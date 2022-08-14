@@ -1,9 +1,10 @@
 import sqlite3
 import time
 import pickle
+from math import floor, log
 
 
-INTERVAL = 60
+INTERVAL = 30
 
 
 def load():
@@ -38,6 +39,19 @@ def save(conn, state):
     )
 
 
+def remove_extra(conn):
+    with conn:
+        saves = conn.execute("SELECT created FROM saves ORDER BY created DESC")
+    bins = {}
+    for created, in saves:
+        num = floor(log(created / INTERVAL, 2))
+        if num not in bins:
+            bins[num] = created
+    with conn:
+        vals = ", ".join([str(val) for val in bins.values()])
+        conn.execute(f"DELETE FROM saves WHERE created NOT IN ({vals})")
+
+
 def repeat_save(state):
     try:
         conn = sqlite3.connect("saves.db")
@@ -46,8 +60,7 @@ def repeat_save(state):
             time.sleep(INTERVAL)
             with conn:
                 save(conn, state)
-            with conn:
-                exec_file(conn, "removal.sql")
+            remove_extra(conn)
     finally:
         # Should be a seperate way to use a context manager to do this
         conn.close()
