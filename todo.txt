@@ -1,1 +1,1 @@
-* grep both repos for "TODO:"
+* check if connection succeeds on client side
