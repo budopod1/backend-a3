@@ -101,14 +101,16 @@ class Player(Entity):
             trade = get_trade(self.user.container, i)
             if trade is not None:
                 if self.try_trade(trade):
-                    self.user.container = 0
-                    # mouse is still in same place as when clicked on trader
-                    # as far as game knows, so if we don't remove the mouse input
-                    # the container will immediatly reopen
-                    lmb = False
-                    lmbjd = False
-                    rmb = False
-                    rmbjd = False
+                    # Close the container if you can't make the same trade again
+                    if not self.can_trade(trade):
+                        self.user.container = 0
+                        # mouse is still in same place as when clicked on trader
+                        # as far as game knows, so if we don't remove the mouse input
+                        # the container will immediatly reopen
+                        lmb = False
+                        lmbjd = False
+                        rmb = False
+                        rmbjd = False
         
         if (self.user.container == 1 and self.user.cell >= 0
             and lmbjd):
@@ -183,11 +185,17 @@ class Player(Entity):
             for item in self.inventory
         ], default=1)
 
-    def try_trade(self, trade):
-        take, give = trade
+    def can_trade(self, trade):
+        take, _ = trade
         for item, amount in take:
             if not self.has_n_items(item, amount):
                 return False
+        return True
+
+    def try_trade(self, trade):
+        if not self.can_trade(trade):
+            return False
+        take, give = trade
         for item, amount in take:
             self.remove_n_items(item, amount)
         item, amount = give
