@@ -34,6 +34,10 @@ class State:
             return user, {"success": True, "message": ""}
         return None, {"success": False, "message": "Incorrect password"}
 
+    def ticking(self):
+        while True:
+            self.tick()
+
     def tick(self):
         self.timer.tick()
         

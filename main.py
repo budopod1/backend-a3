@@ -112,13 +112,6 @@ async def serve(websocket):
         await websocket.close()
 
 
-def ticking():
-    # TODO: Move to state.py
-    global state
-    while True:
-        state.tick()
-
-
 async def health_check(path, request_headers):
     if path != "/ws":
         return (
@@ -149,7 +142,7 @@ def main():
         if state is None:
             state = State()
         
-        tick_thread = Thread(target=ticking)
+        tick_thread = Thread(target=state.ticking)
         tick_thread.start()
         
         admin_thread = Thread(target=console, args=(state,))
