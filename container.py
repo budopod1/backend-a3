@@ -2,7 +2,7 @@ from tiles import Wood, Stone, Iron, Drill1, Drill2, Planks
 from utils import pad_list
 from tiles import Tile, Empty, Arrow
 from shortsocket import Array
-# TODO: Change gui to container
+
 
 all_trades = {
     1: [
@@ -11,22 +11,22 @@ all_trades = {
         (((Wood, 2),), (Planks, 1))
     ]
 }
-trade_guis = [2]
+trade_containers = [2]
 
 
-def get_trade(gui, num):
-    if gui not in trade_guis:
+def get_trade(container, num):
+    if container not in trade_containers:
         return None
-    trades = all_trades[{2: 1}[gui]]
+    trades = all_trades[{2: 1}[container]]
     if len(trades) <= num:
         return None
     return trades[num]
 
 
-def inventory_gui(player):
+def inventory_container(player):
     items = player.sorted_inventory()
     amounts = [player.inventory[item] for item in items]
-    return make_gui(
+    return make_container(
         1,
         [
             item
@@ -36,9 +36,9 @@ def inventory_gui(player):
         8, 4
     )
 
-def trader1_gui(player):
+def trader1_container(player):
     trades = all_trades[1]
-    return make_gui(
+    return make_container(
         2,
         *zip(*[
             item
@@ -55,12 +55,12 @@ def trader1_gui(player):
         ]), 9, 5, Empty
     )
 
-def make_gui(gui, items, amounts, width, height, otherwise=Tile,
+def make_container(container, items, amounts, width, height, otherwise=Tile,
              slots=None):
     items = list(items[::-1])
     amounts = list(amounts[::-1])
     return Array([
-        Array([gui], dtype="int8"),
+        Array([container], dtype="int8"),
         Array([
             (items.pop().TYPE if items else otherwise.TYPE)
             if slots is None or (x, y) in slots else 
@@ -78,7 +78,7 @@ def make_gui(gui, items, amounts, width, height, otherwise=Tile,
     ])
 
 
-guis = {
-    1: inventory_gui,
-    2: trader1_gui
+containers = {
+    1: inventory_container,
+    2: trader1_container
 }

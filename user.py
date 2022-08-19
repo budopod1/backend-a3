@@ -3,7 +3,7 @@ from math import floor, ceil
 from shortsocket import Array
 from timer import Stopwatch
 from functools import lru_cache
-from gui import guis
+from container import containers
 from tiles import tile_hotbar_order
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -49,7 +49,7 @@ class User:
         self.timer = Stopwatch()
         self.used_ids = []
 
-        self.gui = 0
+        self.container = 0
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -83,8 +83,8 @@ class User:
     def render_frame(self):
         self.timer.start()
         
-        if self.gui:
-            return guis[self.gui](self.player)
+        if self.container:
+            return containers[self.container](self.player)
 
         # self.check_entity_ids()
         entities = {

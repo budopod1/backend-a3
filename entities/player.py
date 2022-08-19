@@ -2,7 +2,7 @@ from entities.entity import Entity
 from math import ceil
 from tiles import tile_hotbar_order, tile_inventory_order
 from timer import Cooldown
-from gui import trade_guis, get_trade
+from container import trade_containers, get_trade
 
 
 class Player(Entity):
@@ -68,12 +68,12 @@ class Player(Entity):
         up_and_down = press_ground_pound and press_jump
 
         if 32 in self.user.keys_just_down:
-            if self.user.gui == 0:
-                self.user.gui = 1
+            if self.user.container == 0:
+                self.user.container = 1
             else:
-                self.user.gui = 0
+                self.user.container = 0
         elif 27 in self.user.keys_just_down:
-            self.user.gui = 0
+            self.user.container = 0
             
         mouse_buttons = self.user.mouse_buttons
         mouse_buttons_just_down = self.user.mouse_buttons_just_down
@@ -87,9 +87,9 @@ class Player(Entity):
             lmb = False
         rmbjs = 3 in mouse_buttons_just_down or (lmbjd and 16 in self.user.keys_down)
         if rmbjs:
-            lmbjs = False
+            lmbjd = False
 
-        if (self.user.gui in trade_guis and self.user.cell >= 0
+        if (self.user.container in trade_containers and self.user.cell >= 0
             and lmbjd):
             cell = self.user.cell
             i = 0
@@ -98,24 +98,26 @@ class Player(Entity):
                 if i % 2 == 0:
                     cell -= 1
                 i += 1
-            trade = get_trade(self.user.gui, i)
+            trade = get_trade(self.user.container, i)
             if trade is not None:
                 if self.try_trade(trade):
-                    self.user.gui = 0
+                    self.user.container = 0
                     # mouse is still in same place as when clicked on trader
                     # as far as game knows, so if we don't remove the mouse input
-                    # the gui will immediatly reopen
-                    mouse_buttons = set()
-                    mouse_buttons_just_down = set()
-
-        if (self.user.gui == 1 and self.user.cell >= 0
+                    # the container will immediatly reopen
+                    lmb = False
+                    lmbjd = False
+                    rmb = False
+                    rmbjd = False
+        
+        if (self.user.container == 1 and self.user.cell >= 0
             and lmbjd):
                 inventory = self.sorted_inventory()
                 if self.user.cell < len(inventory):
                     inventory[self.user.cell].select(self)
             
         
-        if self.user.gui:
+        if self.user.container:
             return
 
         time_delta = self.state.timer.time_delta

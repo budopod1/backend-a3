@@ -28,7 +28,7 @@ class State:
 
     def authorize(self, username, password):
         if username not in self.users:
-            return None, {"success": False, "message": "Incorrect username"}
+            return None, {"success": False, "message": "A user with that name does not exist"}
         user = self.users[username]
         if user.check_password(password):
             return user, {"success": True, "message": ""}

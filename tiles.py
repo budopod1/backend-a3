@@ -140,7 +140,7 @@ class Trader1(Tile):
     TYPE = 8
 
     def interact(self, player):
-        player.user.gui = 2
+        player.user.container = 2
 
 
 class Wood(Tile):
