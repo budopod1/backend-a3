@@ -113,12 +113,20 @@ async def serve(websocket):
 
 
 async def health_check(path, request_headers):
-    if path != "/ws":
-        return (
-            HTTPStatus.FOUND, 
-            {"Location": "https://puffio.repl.co" + path}, 
-            b""
-        )
+    if path == "/contest": # short for connection test
+        with open("contest.html", "rb") as file:
+            return (
+                HTTPStatus.OK,
+                {"Content-Type": "text/html"},
+                file.read()
+            )
+    if path == "/ws":
+        return
+    return (
+        HTTPStatus.FOUND, 
+        {"Location": "https://puffio.repl.co" + path}, 
+        b""
+    )
 
 
 async def start_server():
