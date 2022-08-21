@@ -138,9 +138,21 @@ class Trader1(Tile):
     BREAK_COOLDOWN = 5
     INTERACTABLE = True
     TYPE = 8
+    
+    @classmethod
+    def break_becomes(cls):
+        return Trader1Stall
 
     def interact(self, player):
         player.user.container = 2
+
+
+class Trader1Stall(Tile):
+    TYPE = 11
+
+    @classmethod
+    def place_becomes(cls):
+        return Trader1
 
 
 class Wood(Tile):
@@ -151,12 +163,14 @@ class Wood(Tile):
 
 tiles = [
     Tile, Arrow, Mango, Drill1, Drill2, Iron, IronOre, Grass, Wood,
-    Leaves, Stone, Flowers, Planks, Sapling, Trader1
+    Leaves, Stone, Flowers, Planks, Sapling, Trader1, Trader1Stall
 ]
+
 tile_inventory_order = bidict({i: item for i, item in enumerate([
     Tile, Arrow, Drill1, Drill2, Iron, IronOre, Grass,
-    Stone, Wood, Planks, Mango, Sapling, Leaves, Flowers, Trader1
+    Stone, Wood, Planks, Mango, Sapling, Leaves, Flowers, Trader1, Trader1Stall
 ])})
+
 tile_hotbar_order = bidict({i: item for i, item in enumerate([
-    Grass, Stone, Wood, Planks, Mango, Leaves, Flowers, Trader1
+    Grass, Stone, Wood, Planks, Mango, Leaves, Flowers, Trader1Stall
 ])})
