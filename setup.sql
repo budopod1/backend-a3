@@ -1,4 +1,4 @@
 CREATE TABLE IF NOT EXISTS saves (
-    created INTEGER PRIMARY KEY,
+    created INT PRIMARY KEY,
     save BLOB NOT NULL
-);
+)

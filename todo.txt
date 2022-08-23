@@ -1,1 +1,2 @@
 * check if connection succeeds on client side
+* fix disc and ram usage

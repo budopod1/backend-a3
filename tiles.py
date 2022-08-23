@@ -74,6 +74,11 @@ class Grass(Tile):
     TYPE = 1
 
 
+class Hatch(Tile):
+    BREAK_COOLDOWN = 0.2
+    Type = 12
+
+
 class IronOre(Tile):
     BREAK_COOLDOWN = 4
     TYPE = 9
