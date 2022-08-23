@@ -6,7 +6,8 @@ from timer import Cooldown
 class Zombie(Entity):
     def __init__(self, *args):
         super().__init__(*args)
-        
+
+        self.iq = 0
         self.health = 5
         self.jump_power = 6
         self.move_power = 3

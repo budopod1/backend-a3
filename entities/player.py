@@ -10,6 +10,7 @@ class Player(Entity):
         super().__init__( server, pos=(0, 0))
         assert user
         self.user = user
+        self.iq = float('inf')
 
         # I stole the names from minceraft, so what?
         self.mode = "survival"

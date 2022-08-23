@@ -43,7 +43,7 @@ class Entity:
                 point_x * 0.45 + x, 
                 point_y * 0.45 - 0.05 + y
             ))
-            if block and block.COLLISION:
+            if block and block.collides(self):
                 return True
         return False
 

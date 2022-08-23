@@ -16,6 +16,9 @@ class Tile:
     BREAK_SPEED = 1
     TICKER = False
 
+    def collides(self, obj):
+        return self.COLLISION
+
     def interact(self, player):
         name = type(self).__name__
         raise AttributeError(f"Tile {name} cannot be interacted with")
@@ -76,7 +79,11 @@ class Grass(Tile):
 
 class Hatch(Tile):
     BREAK_COOLDOWN = 0.2
-    Type = 12
+    TYPE = 12
+    COLLISION = True
+
+    def collides(self, obj):
+        return obj.iq < 1
 
 
 class IronOre(Tile):
@@ -168,14 +175,14 @@ class Wood(Tile):
 
 tiles = [
     Tile, Arrow, Mango, Drill1, Drill2, Iron, IronOre, Grass, Wood,
-    Leaves, Stone, Flowers, Planks, Sapling, Trader1, Trader1Stall
+    Leaves, Stone, Flowers, Planks, Sapling, Trader1, Trader1Stall, Hatch
 ]
 
 tile_inventory_order = bidict({i: item for i, item in enumerate([
-    Tile, Arrow, Drill1, Drill2, Iron, IronOre, Grass,
+    Tile, Arrow, Drill1, Drill2, Iron, IronOre, Grass, Hatch,
     Stone, Wood, Planks, Mango, Sapling, Leaves, Flowers, Trader1, Trader1Stall
 ])})
 
 tile_hotbar_order = bidict({i: item for i, item in enumerate([
-    Grass, Stone, Wood, Planks, Mango, Leaves, Flowers, Trader1Stall
+    Grass, Stone, Wood, Planks, Mango, Leaves, Flowers, Hatch, Trader1Stall
 ])})
